@@ -1,0 +1,85 @@
+syntax = "proto3";
+
+option java_package = "com.skander.grpc";
+
+// ShopService provides CRUD operations for items and orders.
+service shop {
+  rpc GetAllItems(Empty) returns (ItemListResponse);
+  rpc GetItemById(ItemIdRequest) returns (ItemResponse);
+  rpc CreateItem(CreateItemRequest) returns (ItemResponse);
+  rpc DeleteItem(ItemIdRequest) returns (Empty);
+  rpc GetAllOrders(Empty) returns (OrderListResponse);
+  rpc GetOrderById(OrderIdRequest) returns (OrderResponse);
+  rpc CreateOrder(CreateOrderRequest) returns (OrderResponse);
+  rpc DeleteOrder(OrderIdRequest) returns (Empty);
+  rpc login(LoginRequest)  returns (APIResponse);
+  rpc logout(Empty)  returns (APIResponse);
+}
+
+// ItemResponse message represents an item with an ID, name, price, and description.
+message ItemResponse {
+  int32 id = 1;
+  string name = 2;
+  double price = 3;
+  string description = 4;
+}
+
+message CreateItemRequest {
+  int32 id = 1;
+  string name = 2;
+  double price = 3;
+  string description = 4;
+}
+
+// OrderItem message represents an item in an order with its quantity.
+message OrderedItem {
+  ItemResponse item = 1;
+  int32 quantity = 2;
+}
+
+// OrderResponse message represents an order with an ID, a list of order items, and the total price.
+message OrderResponse {
+  int32 id = 1;
+  repeated OrderedItem ordered_items = 2;
+  double total_price = 3;
+}
+
+message CreateOrderRequest {
+  int32 id = 1;
+  repeated OrderedItem order_items = 2;
+  double total_price = 3;
+}
+
+// Empty message represents an empty request or response.
+message Empty {}
+
+// ItemListResponse message represents a response containing a list of items.
+message ItemListResponse {
+  repeated ItemResponse items = 1;
+}
+
+// OrderListResponse message represents a response containing a list of orders.
+message OrderListResponse {
+  repeated OrderResponse orders = 1;
+}
+
+
+// ItemIdRequest message represents a request containing an ID of an item.
+message ItemIdRequest {
+  int32 id = 1;
+}
+
+// OrderIdRequest message represents a request containing an ID of an order.
+message OrderIdRequest {
+  int32 id = 1;
+}
+
+message LoginRequest{
+       string username = 1 ;
+       string password = 2 ;
+}
+
+message APIResponse{
+      string responsemessage = 1;
+      int32  responseCode  = 2;
+}
